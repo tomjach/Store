@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Store.Models;
 
 namespace Store.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class DataContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public DbSet<Product> Products { get; set; }
+
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }

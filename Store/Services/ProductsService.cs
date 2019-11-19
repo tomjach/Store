@@ -34,5 +34,23 @@ namespace Store.Services
             products.Add(product);
             return product;
         }
+
+        public Product Update(Product product)
+        {
+            var oldProduct = products.SingleOrDefault(x => x.Id == product.Id);
+            oldProduct = product;
+
+            return product;
+        }
+
+        public bool Delete(Guid id)
+        {
+            var product = products.SingleOrDefault(x => x.Id == id);
+            if (product == null)
+                return false;
+
+            products.Remove(product);
+            return true;
+        }
     }
 }

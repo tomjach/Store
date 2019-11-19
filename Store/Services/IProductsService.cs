@@ -8,10 +8,14 @@ namespace Store.Services
 {
     public interface IProductsService 
     {
-        ICollection<Product> GetAll();
+        Task<ICollection<Product>> GetAllAsync();
 
-        Product Get(Guid id);
+        Task<Product> GetAsync(Guid id);
 
-        Product Add(string name);
+        Task<Product> AddAsync(string name);
+
+        Task<Product> UpdateAsync(Product product);
+
+        Task<bool> DeleteAsync(Guid id);
     }
 }
