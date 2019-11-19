@@ -2,54 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Store.Data;
 using Store.Models;
 
 namespace Store.Services
 {
     public class ProductsService : IProductsService
     {
-        private readonly List<Product> products = new List<Product>();
+        private readonly DataContext dbContext;
 
-        public ProductsService()
+        public ProductsService(DataContext dbContext)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                products.Add(new Product { Id = Guid.NewGuid(), Name = $"Nazwa {i}" });
-            }
+            this.dbContext = dbContext;
         }
 
-        public ICollection<Product> GetAll()
+        public async Task<ICollection<Product>> GetAllAsync()
         {
-            return products;
+            return await dbContext.Products.ToListAsync();
         }
 
-        public Product Get(Guid id)
+        public async Task<Product> GetAsync(Guid id)
         {
-            return products.SingleOrDefault(x => x.Id == id);
+            return await dbContext.Products.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Product Add(string name)
+        public async Task<Product> AddAsync(string name)
         {
             var product = new Product { Id = Guid.NewGuid(), Name = name };
-            products.Add(product);
+            dbContext.Products.Add(product);
+
+            await dbContext.SaveChangesAsync();
             return product;
         }
 
-        public Product Update(Product product)
+        public async Task<Product> UpdateAsync(Product product)
         {
-            var oldProduct = products.SingleOrDefault(x => x.Id == product.Id);
-            oldProduct = product;
+            dbContext.Products.Update(product);
 
+            await dbContext.SaveChangesAsync();
             return product;
         }
 
-        public bool Delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var product = products.SingleOrDefault(x => x.Id == id);
+            var product = await dbContext.Products.SingleOrDefaultAsync(x => x.Id == id);
             if (product == null)
                 return false;
 
-            products.Remove(product);
+            dbContext.Products.Remove(product);
+            await dbContext.SaveChangesAsync();
             return true;
         }
     }

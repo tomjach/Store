@@ -6,6 +6,7 @@ using Store.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Store.Controllers.V1
 {
@@ -20,17 +21,17 @@ namespace Store.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Products.GetAll)]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var response = productsService.GetAll().Select(x => new ProductResponse { Id = x.Id, Name = x.Name });
+            var response = (await productsService.GetAllAsync()).Select(x => new ProductResponse { Id = x.Id, Name = x.Name });
 
             return Ok(response);
         }
 
         [HttpGet(ApiRoutes.Products.Get)]
-        public IActionResult Get([FromRoute]Guid id)
+        public async Task<IActionResult> Get([FromRoute]Guid id)
         {
-            var product = productsService.Get(id);
+            var product = await productsService.GetAsync(id);
 
             if(product == null)
             {
@@ -43,9 +44,9 @@ namespace Store.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Products.Add)]
-        public IActionResult Add([FromBody]ProductRequest productRequest)
+        public async Task<IActionResult> Add([FromBody]ProductRequest productRequest)
         {
-            var product = productsService.Add(productRequest.Name);
+            var product = await productsService.AddAsync(productRequest.Name);
 
             var response = new ProductResponse { Id = product.Id, Name = product.Name };
 
@@ -53,9 +54,9 @@ namespace Store.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Products.Update)]
-        public IActionResult Update([FromRoute] Guid id, [FromBody]ProductRequest productRequest)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody]ProductRequest productRequest)
         {
-            var product = productsService.Get(id);
+            var product = await productsService.GetAsync(id);
 
             if (product == null)
             {
@@ -64,7 +65,7 @@ namespace Store.Controllers.V1
 
             product.Name = productRequest.Name;
 
-            var updatedProduct = productsService.Update(product);
+            var updatedProduct = await productsService.UpdateAsync(product);
 
             var response = new ProductResponse { Id = updatedProduct.Id, Name = updatedProduct.Name };
 
@@ -72,9 +73,9 @@ namespace Store.Controllers.V1
         }
 
         [HttpDelete(ApiRoutes.Products.Delete)]
-        public IActionResult Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var deleted = productsService.Delete(id);
+            var deleted = await productsService.DeleteAsync(id);
 
             if (deleted)
                 return NoContent();

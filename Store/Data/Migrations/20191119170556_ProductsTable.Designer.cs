@@ -9,7 +9,7 @@ using Store.Data;
 
 namespace Store.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(DataContext))]
     [Migration("20191119170556_ProductsTable")]
     partial class ProductsTable
     {
