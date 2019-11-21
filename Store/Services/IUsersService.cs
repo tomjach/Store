@@ -8,7 +8,7 @@ namespace Store.Services
 {
     public interface IUsersService
     {
-        Task AddAsync(string email, string password);
+        Task<UserResult> AddAsync(string email, string password);
         Task<UserResult> LoginAsync(string email, string password);
     }
 }

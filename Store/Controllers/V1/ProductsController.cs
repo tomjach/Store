@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Contracts.V1;
 using Store.Contracts.V1.Requests;
 using Store.Contracts.V1.Responses;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Store.Controllers.V1
 {
+    [Authorize]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -20,6 +22,7 @@ namespace Store.Controllers.V1
             this.productsService = productsService;
         }
 
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.Products.GetAll)]
         public async Task<IActionResult> GetAll()
         {

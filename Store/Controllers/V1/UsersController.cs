@@ -23,9 +23,14 @@ namespace Store.Controllers.V1
         [HttpPost(ApiRoutes.Users.Add)]
         public async Task<IActionResult> Add([FromBody]NewUserRequest userRequest)
         {
-            await usersService.AddAsync(userRequest.Email, userRequest.Password);
+            var userResult = await usersService.AddAsync(userRequest.Email, userRequest.Password);
 
-            return NoContent();
+            if (userResult.Errors != null && userResult.Errors.Any())
+            {
+                return BadRequest(new AuthFailedResponse { Errors = userResult.Errors });
+            }
+
+            return Ok(new AuthSuccessResponse { Token = userResult.Token });
         }
 
         [HttpPost(ApiRoutes.Users.Login)]
