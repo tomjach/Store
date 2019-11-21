@@ -31,9 +31,14 @@ namespace Store.Controllers.V1
         [HttpPost(ApiRoutes.Users.Login)]
         public async Task<IActionResult> Login([FromBody]LoginUserRequest userRequest)
         {
-            await usersService.LoginAsync(userRequest.Email, userRequest.Password);
+            var userResult = await usersService.LoginAsync(userRequest.Email, userRequest.Password);
 
-            return NoContent();
+            if (userResult.Errors != null && userResult.Errors.Any())
+            {
+                return BadRequest(new AuthFailedResponse { Errors = userResult.Errors });
+            }
+
+            return Ok(new AuthSuccessResponse { Token = userResult.Token });
         }
     }
 }
