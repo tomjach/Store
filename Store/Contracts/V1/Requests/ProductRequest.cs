@@ -7,6 +7,7 @@ namespace Store.Contracts.V1.Requests
 {
     public class ProductRequest
     {
-        public string Name { get; set; }
+        public string Name2 { get; set; }
+        public int CategoryId { get; set; }
     }
 }

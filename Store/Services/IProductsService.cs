@@ -12,7 +12,7 @@ namespace Store.Services
 
         Task<Product> GetAsync(Guid id);
 
-        Task<Product> AddAsync(string name);
+        Task<Product> AddAsync(Product product);
 
         Task<Product> UpdateAsync(Product product);
 

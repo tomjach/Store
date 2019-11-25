@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.Contracts.V1;
 using Store.Contracts.V1.Requests;
 using Store.Contracts.V1.Responses;
+using Store.Helpers;
+using Store.Models;
 using Store.Services;
 using System;
 using System.Collections.Generic;
@@ -16,10 +19,12 @@ namespace Store.Controllers.V1
     public class ProductsController : ControllerBase
     {
         private readonly IProductsService productsService;
+        private readonly IMapper mapper;
 
-        public ProductsController(IProductsService productsService)
+        public ProductsController(IProductsService productsService, IMapper mapper)
         {
             this.productsService = productsService;
+            this.mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -49,10 +54,28 @@ namespace Store.Controllers.V1
         [HttpPost(ApiRoutes.Products.Add)]
         public async Task<IActionResult> Add([FromBody]ProductRequest productRequest)
         {
-            var product = await productsService.AddAsync(productRequest.Name);
+            //var newProduct = new Product()
+            //{
+            //    Name = productRequest.Name,
+            //    OwnerUserId = userId,
+            //    CategoryId = productRequest.CategoryId
+            //};
+            var newProduct = mapper.Map<Product>(productRequest);
 
-            var response = new ProductResponse { Id = product.Id, Name = product.Name };
 
+            var product = await productsService.AddAsync(newProduct);
+
+
+
+            //var response = new ProductResponse
+            //{
+            //    Id = product.Id,
+            //    Name = product.Name,
+            //    CategoryId = product.CategoryId,
+            //    CategoryName = product.Category.Name
+            //};
+            var response = mapper.Map<ProductResponse>(product);
+            
             return CreatedAtAction(nameof(Get), new { id = response.Id }, response);
         }
 
@@ -66,7 +89,8 @@ namespace Store.Controllers.V1
                 return NotFound();
             }
 
-            product.Name = productRequest.Name;
+            product.Name = productRequest.Name2;
+            product.CategoryId = productRequest.CategoryId;
 
             var updatedProduct = await productsService.UpdateAsync(product);
 
