@@ -89,7 +89,7 @@ namespace Store.Controllers.V1
                 return NotFound();
             }
 
-            product.Name = productRequest.Name2;
+            product.Name = productRequest.Name;
             product.CategoryId = productRequest.CategoryId;
 
             var updatedProduct = await productsService.UpdateAsync(product);

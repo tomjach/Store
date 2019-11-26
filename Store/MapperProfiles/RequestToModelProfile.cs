@@ -8,8 +8,7 @@ namespace Store.MapperProfiles
     {
         public RequestToModelProfile()
         {
-            CreateMap<ProductRequest, Product>()
-                .ForMember(dest => dest.Name, x => x.MapFrom(src => src.Name2));
+            CreateMap<ProductRequest, Product>();
         }
     }
 }
