@@ -55,8 +55,10 @@ namespace Store.Controllers.V1
         }
 
         [HttpPost(ApiRoutes.Products.Add)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add([FromBody]ProductRequest productRequest)
         {
+
             //var newProduct = new Product()
             //{
             //    Name = productRequest.Name,
