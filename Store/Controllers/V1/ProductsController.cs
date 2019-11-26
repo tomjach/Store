@@ -31,7 +31,10 @@ namespace Store.Controllers.V1
         [HttpGet(ApiRoutes.Products.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            var response = (await productsService.GetAllAsync()).Select(x => new ProductResponse { Id = x.Id, Name = x.Name });
+            var products = await productsService.GetAllAsync();
+
+            //var response = products.Select(x => new ProductResponse { Id = x.Id, Name = x.Name });
+            var response = mapper.Map<ICollection<ProductResponse>>(products);
 
             return Ok(response);
         }
@@ -89,12 +92,14 @@ namespace Store.Controllers.V1
                 return NotFound();
             }
 
-            product.Name = productRequest.Name;
-            product.CategoryId = productRequest.CategoryId;
-
+            //product.Name = productRequest.Name;
+            //product.CategoryId = productRequest.CategoryId;
+            mapper.Map(productRequest, product);
+                  
             var updatedProduct = await productsService.UpdateAsync(product);
 
-            var response = new ProductResponse { Id = updatedProduct.Id, Name = updatedProduct.Name };
+            //var response = new ProductResponse { Id = updatedProduct.Id, Name = updatedProduct.Name };
+            var response = mapper.Map<ProductResponse>(updatedProduct);
 
             return Ok(response);
         }
