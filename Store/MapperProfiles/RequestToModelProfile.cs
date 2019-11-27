@@ -9,6 +9,8 @@ namespace Store.MapperProfiles
         public RequestToModelProfile()
         {
             CreateMap<ProductRequest, Product>();
+
+            CreateMap<CategoryRequest, Category>();
         }
     }
 }

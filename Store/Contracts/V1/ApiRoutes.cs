@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Store.Contracts.V1
+﻿namespace Store.Contracts.V1
 {
     public static class ApiRoutes
     {
@@ -22,6 +17,12 @@ namespace Store.Contracts.V1
         {
             public const string Add = Base + "users";
             public const string Login = Base + "users/login";
+        }
+
+        public static class Categories
+        {
+            public const string GetAll = Base + "categories";
+            public const string Add = Base + "categories";
         }
     }
 }
