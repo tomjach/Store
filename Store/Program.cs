@@ -26,43 +26,9 @@ namespace Store
             using(var serviceScope = host.Services.CreateScope())
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
-
                 await dbContext.Database.MigrateAsync();
 
-
-                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                var user = new IdentityUser { UserName = "admin@test.pl" };
-                var password = "Start123!";
-                if (await userManager.FindByNameAsync(user.UserName) == null)
-                {
-                    var result = await userManager.CreateAsync(user, password);
-                }
-
-
-                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                var admin = new IdentityRole { Name = "Admin" };
-                if (!await roleManager.RoleExistsAsync(admin.Name))
-                {
-                    var result = await roleManager.CreateAsync(admin);
-                }
-
-
-                await userManager.AddToRoleAsync(await userManager.FindByNameAsync(user.UserName), admin.Name);
-
-
-                //var signInManager = serviceScope.ServiceProvider.GetRequiredService<SignInManager<IdentityUser>>();
-
-                //var options = serviceScope.ServiceProvider.GetRequiredService<IOptions<AppSettings>>();
-                //var usersSevice = new UsersService(userManager, signInManager, options);
-
-                //var result = await signInManager.PasswordSignInAsync(user.UserName, password, false, false);
-
-                ////var loginResult = await usersSevice.LoginAsync(user.UserName, password);
-
-                //Console.WriteLine("");
-                ////Console.WriteLine(loginResult.Token);
+                await SeedDatabase.SeedAsync(serviceScope);
             }
             
             host.Run();

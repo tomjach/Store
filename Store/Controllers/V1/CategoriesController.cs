@@ -24,7 +24,6 @@ namespace Store.Controllers.V1
             this.mapper = mapper;
         }
 
-        [AllowAnonymous]
         [HttpGet(ApiRoutes.Categories.GetAll)]
         public async Task<IActionResult> GetAll()
         {
