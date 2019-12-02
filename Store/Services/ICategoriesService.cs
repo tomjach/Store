@@ -6,7 +6,7 @@ namespace Store.Services
 {
     public interface ICategoriesService
     {
-        Task<ICollection<Category>> GetAllAsync();
+        Task<ICollection<Category>> GetAllAsync(PaginationFilter paginationFilter);
         
         Task<Category> AddAsync(Category category);
     }

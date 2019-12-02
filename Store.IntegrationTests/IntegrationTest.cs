@@ -55,7 +55,7 @@ namespace Store.IntegrationTests
         {
             var response = await TestClient.PostAsJsonAsync(ApiRoutes.Users.Login, new LoginUserRequest
             {
-                Email = "admin@test.pl",
+                UserName = "admin@test.pl",
                 Password = "Start123!"
             });
 

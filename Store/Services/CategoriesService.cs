@@ -2,6 +2,7 @@
 using Store.Data;
 using Store.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Store.Services
@@ -15,9 +16,10 @@ namespace Store.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<ICollection<Category>> GetAllAsync()
+        public async Task<ICollection<Category>> GetAllAsync(PaginationFilter paginationFilter)
         {
-            return await dbContext.Categories.ToListAsync();
+            var skip = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
+            return await dbContext.Categories.Skip(skip).Take(paginationFilter.PageSize).ToListAsync();
         }
 
         public async Task<Category> AddAsync(Category category)

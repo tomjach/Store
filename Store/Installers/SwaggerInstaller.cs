@@ -2,7 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Store.Contracts.V1;
+using Store.Contracts.V1.Examples;
+using Swashbuckle.AspNetCore.Filters;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 
 namespace Store.Installers
 {
@@ -12,7 +17,22 @@ namespace Store.Installers
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "My API",
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Tomasz Jach",
+                        Email = "tomasz.jach@archman.pl",
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
 
                 //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 //{
@@ -64,7 +84,16 @@ namespace Store.Installers
                         new string[] { }
                     }
                 });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
+                c.ExampleFilters();
             });
+
+            services.AddSwaggerExamplesFromAssemblyOf<CategoryRequestExapmle>();
         }
     }
 }
