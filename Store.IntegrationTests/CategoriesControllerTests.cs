@@ -36,13 +36,13 @@ namespace Store.IntegrationTests
             await LoginAsAdmin();
 
             var response = await TestClient.GetAsync(ApiRoutes.Categories.GetAll);
-            var categories = await response.Content.ReadAsAsync<IEnumerable<CategoryResponse>>();
+            var categories = await response.Content.ReadAsAsync<PagedResponse<CategoryResponse>>();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equal(2, categories.Count());
+            Assert.Equal(2, categories.Data.Count());
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            categories.Count().Should().Be(2);
+            categories.Data.Count().Should().Be(2);
         }
 
         [Fact]

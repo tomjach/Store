@@ -1,0 +1,14 @@
+﻿@model TestViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@ViewBag.Name<br />
+@Model.Name 
+
+@for (int i = 0; i < 10; i++)
+{
+    <p>
+        Test @i
+    </p>
+}

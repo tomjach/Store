@@ -22,7 +22,7 @@ namespace Store.Services
 
         public async Task<ICollection<Product>> GetAllAsync()
         {
-            return await dbContext.Products.ToListAsync();
+            return await dbContext.Products.Include(x => x.Category).ToListAsync();
         }
 
         public async Task<Product> GetAsync(Guid id)
