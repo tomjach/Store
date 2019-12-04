@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Store.App.Helpers;
 using Store.App.Models;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Store.App.Services
 {
-    public class ProductsService : IProductsService
+    public class ProductsService : BaseService, IProductsService
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly HttpClient httpClient;
-
-        public ProductsService(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory, IOptions<StoreApi> options)
+        public ProductsService(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory, IOptions<StoreApi> options) 
+            : base(httpContextAccessor, httpClientFactory, options)
         {
-            this.httpContextAccessor = httpContextAccessor;
-            this.httpClient = httpClientFactory.CreateClient();
-            httpClient.BaseAddress = new Uri(options.Value.Address);
         }
 
         public async Task<ICollection<ProductViewModel>> GetAllAsync()
         {
-            var token = httpContextAccessor.HttpContext.Request.Cookies["api_token"];
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await httpClient.GetAsync("/api/v1/products");
+            var response = await HttpClient.GetAsync("/api/v1/products");
             var products = await response.Content.ReadAsAsync<ICollection<ProductViewModel>>();
 
             return products;
+        }
+
+        public async Task<bool> AddAsync(CreateProductViewModel createProductViewModel)
+        {
+            var response = await HttpClient.PostAsJsonAsync("/api/v1/products", createProductViewModel);
+
+            return response.StatusCode == HttpStatusCode.Created;
         }
     }
 }

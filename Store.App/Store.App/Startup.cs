@@ -38,6 +38,7 @@ namespace Store.App
 
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<ICategoriesService, CategoriesService>();
 
             var storeApiSection = Configuration.GetSection("StoreApi");
             services.Configure<StoreApi>(storeApiSection);

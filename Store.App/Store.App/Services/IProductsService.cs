@@ -9,5 +9,6 @@ namespace Store.App.Services
     public interface IProductsService
     {
         Task<ICollection<ProductViewModel>> GetAllAsync();
+        Task<bool> AddAsync(CreateProductViewModel createProductViewModel);
     }
 }

@@ -24,7 +24,7 @@ namespace Store.Services
 
         public async Task<Category> AddAsync(Category category)
         {
-            dbContext.Categories.Add(category);
+            await dbContext.Categories.AddAsync(category);
 
             await dbContext.SaveChangesAsync();
 

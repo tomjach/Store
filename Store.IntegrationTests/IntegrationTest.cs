@@ -42,7 +42,7 @@ namespace Store.IntegrationTests
 
         protected async Task LoginAsAdmin()
         {
-            await SeedDatabase.SeedAsync(serviceScope);
+            await SeedDatabase.SeedUserAsync(serviceScope);
             TestClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await GetAdminToken());
         }
 

@@ -28,7 +28,8 @@ namespace Store
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
                 await dbContext.Database.MigrateAsync();
 
-                await SeedDatabase.SeedAsync(serviceScope);
+                await SeedDatabase.SeedUserAsync(serviceScope);
+                await SeedDatabase.SeedProductsAsync(serviceScope);
             }
             
             host.Run();
