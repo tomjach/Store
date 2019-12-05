@@ -42,7 +42,7 @@ namespace Store.IntegrationTests
             Assert.Equal(2, categories.Data.Count());
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            categories.Data.Count().Should().Be(2);
+            categories.Data.Count().Should().Be(1);
         }
 
         [Fact]
